@@ -1,13 +1,9 @@
-import Navbar from "@/components/Navbar/Navbar"
+import Navbar from "@/components/Navbar/Navbar";
+import ProjectCard from "@/components/ProjectCard/ProjectCard";
 
-import styles from "./page.module.css"
+import styles from "./page.module.css";
 
-import {
-  FaFolderOpen,
-  FaCheckCircle,
-  FaClock,
-  FaFire,
-} from "react-icons/fa"
+import { FaFolderOpen, FaCheckCircle, FaClock, FaFire } from "react-icons/fa";
 
 export default function HomePage() {
   return (
@@ -16,14 +12,9 @@ export default function HomePage() {
 
       <div className={styles.header}>
         <div>
-          <h1>
-            Dashboard
-          </h1>
+          <h1>Dashboard</h1>
 
-          <p>
-            Manage your projects,
-            goals and productivity.
-          </p>
+          <p>Manage your projects, goals and productivity.</p>
         </div>
       </div>
 
@@ -76,102 +67,70 @@ export default function HomePage() {
       <div className={styles.contentGrid}>
         <div className={styles.projectsSection}>
           <div className={styles.sectionHeader}>
-            <h2>
-              Active Projects
-            </h2>
+            <h2>Active Projects</h2>
 
-            <button>
-              View All
-            </button>
+            <button>View All</button>
           </div>
 
           <div className={styles.projectList}>
-            <div className={styles.projectCard}>
-              <div>
-                <h3>Toolverse</h3>
+            <ProjectCard
+              title="Toolverse"
+              description="Anime combat Roblox game"
+              status="In Progress"
+              progress={72}
+              tasks={18}
+            />
 
-                <p>
-                  Anime combat Roblox game
-                </p>
-              </div>
+            <ProjectCard
+              title="AI NPC System"
+              description="Advanced intelligent NPCs"
+              status="In Progress"
+              progress={48}
+              tasks={12}
+            />
 
-              <span className={styles.status}>
-                In Progress
-              </span>
-            </div>
-
-            <div className={styles.projectCard}>
-              <div>
-                <h3>AI NPC System</h3>
-
-                <p>
-                  Advanced intelligent NPCs
-                </p>
-              </div>
-
-              <span className={styles.status}>
-                In Progress
-              </span>
-            </div>
-
-            <div className={styles.projectCard}>
-              <div>
-                <h3>MiniStore</h3>
-
-                <p>
-                  E-commerce dashboard
-                </p>
-              </div>
-
-              <span className={styles.status}>
-                Planning
-              </span>
-            </div>
+            <ProjectCard
+              title="MiniStore"
+              description="E-commerce dashboard"
+              status="Planning"
+              progress={15}
+              tasks={24}
+            />
           </div>
         </div>
 
         <div className={styles.goalsSection}>
           <div className={styles.sectionHeader}>
-            <h2>
-              Today Goals
-            </h2>
+            <h2>Today Goals</h2>
           </div>
 
           <div className={styles.goalList}>
             <label className={styles.goalItem}>
               <input type="checkbox" />
 
-              <span>
-                Create hitbox system
-              </span>
+              <span>Create hitbox system</span>
             </label>
 
             <label className={styles.goalItem}>
               <input type="checkbox" />
 
-              <span>
-                Improve NPC AI
-              </span>
+              <span>Improve NPC AI</span>
             </label>
 
             <label className={styles.goalItem}>
               <input type="checkbox" />
 
-              <span>
-                Organize roadmap
-              </span>
+              <span>Organize roadmap</span>
             </label>
 
             <label className={styles.goalItem}>
               <input type="checkbox" />
 
-              <span>
-                Setup GitHub sync
-              </span>
+              <span>Setup GitHub sync</span>
             </label>
           </div>
         </div>
       </div>
     </section>
-  )
+  );
 }
