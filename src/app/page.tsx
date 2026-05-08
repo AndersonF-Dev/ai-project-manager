@@ -4,6 +4,7 @@ import { useState } from "react";
 import Navbar from "@/components/Navbar/Navbar";
 import ProjectCard from "@/components/ProjectCard/ProjectCard";
 import CreateProjectModal from "@/components/CreateProjectModal/CreateProjectModal";
+import DailyGoalCard from "@/components/DailyGoalCard/DailyGoalCard";
 
 import styles from "./page.module.css";
 
@@ -121,29 +122,13 @@ export default function HomePage() {
           </div>
 
           <div className={styles.goalList}>
-            <label className={styles.goalItem}>
-              <input type="checkbox" />
+            <DailyGoalCard title="Create hitbox system" />
 
-              <span>Create hitbox system</span>
-            </label>
+            <DailyGoalCard title="Improve NPC AI" />
 
-            <label className={styles.goalItem}>
-              <input type="checkbox" />
+            <DailyGoalCard title="Organize roadmap" completed />
 
-              <span>Improve NPC AI</span>
-            </label>
-
-            <label className={styles.goalItem}>
-              <input type="checkbox" />
-
-              <span>Organize roadmap</span>
-            </label>
-
-            <label className={styles.goalItem}>
-              <input type="checkbox" />
-
-              <span>Setup GitHub sync</span>
-            </label>
+            <DailyGoalCard title="Setup GitHub sync" />
           </div>
         </div>
       </div>

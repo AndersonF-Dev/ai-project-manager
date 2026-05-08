@@ -14,9 +14,13 @@ datasource db {
 }
 
 model Project {
-  id          String   @id @default(cuid())
-  title       String
-  description String
-  status      String
-  createdAt   DateTime @default(now())
+  id           String   @id @default(cuid())
+  title        String
+  description  String
+  difficulty   String
+  hoursPerDay  Int
+  status       String   @default("Planning")
+  progress     Int      @default(0)
+
+  createdAt    DateTime @default(now())
 }

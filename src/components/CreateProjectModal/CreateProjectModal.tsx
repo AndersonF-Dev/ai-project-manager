@@ -27,15 +27,43 @@ export default function CreateProjectModal({
     return null
   }
 
-  function HandleCreateProject() {
-    console.log({
-      title,
-      description,
-      hoursPerDay,
-      difficulty,
-    })
+  async function HandleCreateProject() {
+    try {
+  const response =
+    await fetch(
+      "/api/projects",
+      {
+        method: "POST",
 
-    onClose()
+        headers: {
+          "Content-Type":
+            "application/json",
+        },
+
+        body: JSON.stringify({
+          title,
+          description,
+          hoursPerDay,
+          difficulty,
+        }),
+      }
+    )
+
+  if (!response.ok) {
+    throw new Error(
+      "Failed to create project"
+    )
+  }
+
+  onClose()
+
+  setTitle("")
+  setDescription("")
+  setHoursPerDay("")
+  setDifficulty("Medium")
+} catch (error) {
+  console.log(error)
+}
   }
 
   return (
