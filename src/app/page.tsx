@@ -1,14 +1,30 @@
+"use client";
+
+import { useState } from "react";
 import Navbar from "@/components/Navbar/Navbar";
 import ProjectCard from "@/components/ProjectCard/ProjectCard";
+import CreateProjectModal from "@/components/CreateProjectModal/CreateProjectModal";
 
 import styles from "./page.module.css";
 
 import { FaFolderOpen, FaCheckCircle, FaClock, FaFire } from "react-icons/fa";
 
 export default function HomePage() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  function OpenModal() {
+    setIsModalOpen(true);
+  }
+
+  function CloseModal() {
+    setIsModalOpen(false);
+  }
+
   return (
     <section className={styles.dashboard}>
       <Navbar />
+
+      <CreateProjectModal isOpen={isModalOpen} onClose={CloseModal} />
 
       <div className={styles.header}>
         <div>
@@ -69,7 +85,7 @@ export default function HomePage() {
           <div className={styles.sectionHeader}>
             <h2>Active Projects</h2>
 
-            <button>View All</button>
+            <button onClick={OpenModal}>New Project</button>
           </div>
 
           <div className={styles.projectList}>
