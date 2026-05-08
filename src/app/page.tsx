@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react"
+
 import Navbar from "@/components/Navbar/Navbar";
 import ProjectCard from "@/components/ProjectCard/ProjectCard";
 import CreateProjectModal from "@/components/CreateProjectModal/CreateProjectModal";
@@ -10,8 +11,36 @@ import styles from "./page.module.css";
 
 import { FaFolderOpen, FaCheckCircle, FaClock, FaFire } from "react-icons/fa";
 
+interface Project {
+  id: string
+  title: string
+  description: string
+  status: string
+  progress: number
+}
+
 export default function HomePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [projects, setProjects] =
+  useState<Project[]>([])
+
+  async function FetchProjects() {
+  try {
+    const response =
+      await fetch("/api/projects")
+
+    const data =
+      await response.json()
+
+    setProjects(data)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+useEffect(() => {
+  FetchProjects()
+}, [])
 
   function OpenModal() {
     setIsModalOpen(true);
@@ -25,7 +54,14 @@ export default function HomePage() {
     <section className={styles.dashboard}>
       <Navbar />
 
-      <CreateProjectModal isOpen={isModalOpen} onClose={CloseModal} />
+      <CreateProjectModal
+  isOpen={isModalOpen}
+  onClose={() => {
+    CloseModal()
+
+    FetchProjects()
+  }}
+/>
 
       <div className={styles.header}>
         <div>
@@ -89,31 +125,25 @@ export default function HomePage() {
             <button onClick={OpenModal}>New Project</button>
           </div>
 
-          <div className={styles.projectList}>
-            <ProjectCard
-              title="Toolverse"
-              description="Anime combat Roblox game"
-              status="In Progress"
-              progress={72}
-              tasks={18}
-            />
-
-            <ProjectCard
-              title="AI NPC System"
-              description="Advanced intelligent NPCs"
-              status="In Progress"
-              progress={48}
-              tasks={12}
-            />
-
-            <ProjectCard
-              title="MiniStore"
-              description="E-commerce dashboard"
-              status="Planning"
-              progress={15}
-              tasks={24}
-            />
-          </div>
+ <div className={styles.projectList}>
+  {projects.map((project) => (
+    <ProjectCard
+      key={project.id}
+      title={project.title}
+      description={
+        project.description
+      }
+      status={
+        project.status as
+          | "Planning"
+          | "In Progress"
+          | "Completed"
+      }
+      progress={project.progress}
+      tasks={0}
+    />
+  ))}
+</div>
         </div>
 
         <div className={styles.goalsSection}>
