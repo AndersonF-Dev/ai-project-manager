@@ -1,46 +1,68 @@
 "use client";
 
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 
 import Navbar from "@/components/Navbar/Navbar";
 import ProjectCard from "@/components/ProjectCard/ProjectCard";
 import CreateProjectModal from "@/components/CreateProjectModal/CreateProjectModal";
 import DailyGoalCard from "@/components/DailyGoalCard/DailyGoalCard";
+import GitHubRepoCard from "@/components/GitHubRepoCard/GitHubRepoCard";
 
 import styles from "./page.module.css";
 
 import { FaFolderOpen, FaCheckCircle, FaClock, FaFire } from "react-icons/fa";
 
 interface Project {
-  id: string
-  title: string
-  description: string
-  status: string
-  progress: number
+  id: string;
+  title: string;
+  description: string;
+  status: string;
+  progress: number;
+}
+
+interface GitHubRepo {
+  id: number;
+  name: string;
+  description: string | null;
+  language: string | null;
+  stargazers_count: number;
+  status: string;
+  stars?: number;
 }
 
 export default function HomePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [projects, setProjects] =
-  useState<Project[]>([])
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [repos, setRepos] = useState<GitHubRepo[]>([]);
+
+  useEffect(() => {
+    FetchProjects();
+    FetchRepos();
+  }, []);
 
   async function FetchProjects() {
-  try {
-    const response =
-      await fetch("/api/projects")
+    try {
+      const response = await fetch("/api/projects");
 
-    const data =
-      await response.json()
+      const data = await response.json();
 
-    setProjects(data)
-  } catch (error) {
-    console.log(error)
+      setProjects(data);
+    } catch (error) {
+      console.log(error);
+    }
   }
-}
 
-useEffect(() => {
-  FetchProjects()
-}, [])
+  async function FetchRepos() {
+    try {
+      const response = await fetch("/api/github/repos");
+
+      const data = await response.json();
+
+      setRepos(data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   function OpenModal() {
     setIsModalOpen(true);
@@ -55,13 +77,13 @@ useEffect(() => {
       <Navbar />
 
       <CreateProjectModal
-  isOpen={isModalOpen}
-  onClose={() => {
-    CloseModal()
+        isOpen={isModalOpen}
+        onClose={() => {
+          CloseModal();
 
-    FetchProjects()
-  }}
-/>
+          FetchProjects();
+        }}
+      />
 
       <div className={styles.header}>
         <div>
@@ -118,32 +140,44 @@ useEffect(() => {
       </div>
 
       <div className={styles.contentGrid}>
-        <div className={styles.projectsSection}>
-          <div className={styles.sectionHeader}>
-            <h2>Active Projects</h2>
-
-            <button onClick={OpenModal}>New Project</button>
+        <div className={styles.contentGridProjects}>
+          <div className={styles.projectsSection}>
+            <div className={styles.sectionHeader}>
+              <h2>Active Projects</h2>
+              <button onClick={OpenModal}>New Project</button>
+            </div>
+            <div className={styles.projectList}>
+              {projects.map((project) => (
+                <ProjectCard
+                  key={project.id}
+                  title={project.title}
+                  description={project.description}
+                  status={
+                    project.status as "Planning" | "In Progress" | "Completed"
+                  }
+                  progress={project.progress}
+                  tasks={0}
+                />
+              ))}
+            </div>
           </div>
-
- <div className={styles.projectList}>
-  {projects.map((project) => (
-    <ProjectCard
-      key={project.id}
-      title={project.title}
-      description={
-        project.description
-      }
-      status={
-        project.status as
-          | "Planning"
-          | "In Progress"
-          | "Completed"
-      }
-      progress={project.progress}
-      tasks={0}
-    />
-  ))}
-</div>
+          <div className={styles.projectsSection}>
+            <div className={styles.sectionHeader}>
+              <h2>GitHub Repositories</h2>
+            </div>
+            <div className={styles.projectList}>
+              {repos.map((repo) => (
+                <GitHubRepoCard
+                  key={repo.id}
+                  name={repo.name}
+                  description={repo.description || "No description provided"} // Fallback para null
+                  language={repo.language || "Mix"} // Fallback para null
+                  status={repo.status || "Public"} // Caso o status venha vazio da sua API
+                  stars={repo.stargazers_count} // Aqui você usa o valor que vem da API
+                />
+              ))}
+            </div>
+          </div>
         </div>
 
         <div className={styles.goalsSection}>

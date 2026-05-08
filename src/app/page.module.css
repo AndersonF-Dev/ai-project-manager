@@ -83,6 +83,12 @@
   gap: 24px;
 }
 
+.contentGridProjects {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
 .projectsSection,
 .goalsSection {
   padding: 24px;
